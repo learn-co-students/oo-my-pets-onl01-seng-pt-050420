@@ -38,15 +38,13 @@ class Owner
   end
 
   def sell_pets
-    self.dogs.each do |dog| 
-      dog.remove_instance_variable(:@owner)
-      dog.mood = "nervous"
+    pets = self.dogs + self.cats
+
+    pets.each do |pet|
+      pet.owner = nil
+      pet.mood = "nervous"
     end
 
-    self.cats.each do |cat| 
-      cat.remove_instance_variable(:@owner)
-      cat.mood = "nervous"
-    end
   end
 
   def list_pets
@@ -58,11 +56,11 @@ class Owner
   end
 
   def self.count
-    @@all.size
+    self.all.size
   end
 
   def self.reset_all
-    @@all.clear
+    self.all.clear
   end
 
 end
