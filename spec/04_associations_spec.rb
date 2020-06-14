@@ -1,5 +1,5 @@
 require_relative 'spec_helper.rb'
-=begin
+
 describe "Associations" do
   before do
     @owner = Owner.new("Timmy")
@@ -140,4 +140,3 @@ describe "Associations" do
     end
   end
 end
-=end

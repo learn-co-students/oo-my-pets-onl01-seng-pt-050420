@@ -4,69 +4,62 @@ class Owner
 
   @@all = []
 
-  def initialize(name, species = "human")
+  def initialize(name)
     @name = name
-    @species = species
-    @@all.push(self)
-    @pets = {:cats => [], :dogs => []}
+    @species = "human"
+    @@all << self
   end
 
   def say_species
-    return "I am a #{@species}."
+    "I am a #{self.species}."
   end
 
   def self.all
-    return @@all
+    @@all
   end
 
   def self.count
-    counter = 0
-    @@all.each do |x|
-      counter += 1
-    end
-    return counter
+    self.all.count
   end
 
   def self.reset_all
-    return @@all.clear
+    self.all.clear
   end
 
   def cats
-    return @pets[:cats]
+    Cat.all.select{|cat| cat.owner == self}
   end
 
   def dogs
-    return @pets[:dogs]
+    Dog.all.select{|dog| dog.owner == self}
   end
 
-  def buy_cat(cat_name)
-    new_cat = Cat.new(cat_name, self)
-    @pets[:cats].push(new_cat)
+  def buy_cat(name)
+    Cat.new(name, self)
   end
 
-  def buy_dog(dog_name)
-    new_dog = Dog.new(dog_name, self)
-    @pets[:dogs].push(new_dog)
+  def buy_dog(name)
+    Dog.new(name, self)
   end
 
   def walk_dogs
-    @pets.collect do |key, value|
-      if key == :dogs
-        value.collect! do |dog|
-          dog.mood = "happy"
-        end
-      end
-    end
+    self.dogs.each { |dog| dog.mood = "happy" }
   end
 
   def feed_cats
-    @pets.collect do |key, value|
-      if key == :cats
-        value.each do |cat|
-          cat.mood = "happy"
-        end
-      end
+    self.cats.each { |cat| cat.mood = "happy" }
+  end
+
+  def sell_pets
+    pets = self.dogs + self.cats
+
+    pets.each do |pet|
+      pet.mood = "nervous"
+      pet.owner = nil
     end
   end
 
+  def list_pets
+    "I have #{self.dogs.count} dog(s), and #{self.cats.count} cat(s)."
+  end
 end
